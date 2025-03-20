@@ -1,0 +1,40 @@
+name: Flutter APK Build and Publish
+
+on:
+  push:
+    branches:
+      - main # Change to your main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.5' #change to your flutter version.
+      - run: flutter pub get
+      - run: flutter build apk --release # or --debug
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download APK
+        uses: actions/download-artifact@v3
+        with:
+          name: release-apk
+      - name: Create Github Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: app-release.apk
+          generate_release_notes: true
