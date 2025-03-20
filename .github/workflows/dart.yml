@@ -17,24 +17,28 @@ jobs:
           java-version: '17'
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.16.5' #change to your flutter version.
+          flutter-version: '3.16.5' # Change to your Flutter version
       - run: flutter pub get
-      - run: flutter build apk --release # or --debug
+      - run: flutter build apk --release
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
+
   publish:
     needs: build
     runs-on: ubuntu-latest
+
     steps:
       - name: Download APK
         uses: actions/download-artifact@v3
         with:
           name: release-apk
-      - name: Create Github Release
+          path: release-apk
+
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: app-release.apk
+          files: release-apk/app-release.apk
           generate_release_notes: true
