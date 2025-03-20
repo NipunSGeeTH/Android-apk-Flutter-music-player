@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 void main() {
   runApp(const MyApp());
@@ -157,6 +158,26 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
       ];
     });
     _loadCurrentSong();
+  }
+
+  Future<void> enableWakelock() async {
+    try {
+      await WakelockPlus.enable();
+      // You can also use this to check if wakelock is enabled
+      final isEnabled = await WakelockPlus.enabled;
+      print('Wakelock is enabled: $isEnabled');
+    } catch (e) {
+      print('Error enabling wakelock: $e');
+    }
+  }
+
+  // Call this when stopping media playback
+  Future<void> disableWakelock() async {
+    try {
+      await WakelockPlus.disable();
+    } catch (e) {
+      print('Error disabling wakelock: $e');
+    }
   }
 
   void _showLoadSuccessMessage() {
@@ -310,7 +331,17 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                         ),
                       ),
 
-                      SelectableText.rich(
+                      const Text(
+                        '🇱🇰',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          height: 1.5,
+                        ),
+                      ),
+
+                      Text.rich(
                         TextSpan(
                           style: const TextStyle(
                             color: Colors.white,
@@ -318,7 +349,49 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                             height: 1.5,
                           ),
                           children: [
-                            const TextSpan(text: '\nContact: '),
+                            // Wrap the disclaimer in a separate SelectableText.rich widget
+                            WidgetSpan(
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: Text.rich(
+                                  TextSpan(
+                                    text:
+                                        '\n'
+                                        '• All rights of the music belong to their respective owners\n'
+                                        '• This is a demonstration project for understanding app development\n'
+                                        '• Use this app responsibly and respect copyright laws\n',
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                            ),
+                            const TextSpan(
+                              text: 'Special Thanks To:\n ',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Color.fromARGB(255, 243, 4, 203),
+                              ),
+                            ),
+                            const TextSpan(
+                              text:
+                                  '• UOM \n'
+                                  '• My Family\n'
+                                  '• Friends ',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.white,
+                                height: 1.5,
+                              ),
+                            ),
+
+                            const TextSpan(text: '\n\nContact Me : '),
                             TextSpan(
                               text: 'LinkedIn',
                               style: const TextStyle(
@@ -340,10 +413,10 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                                       }
                                     },
                             ),
-                             const TextSpan(text: '    '),
+                            const TextSpan(text: '    '),
 
                             TextSpan(
-                              text: 'WhatsApp',
+                              text: 'WhatsApp\n',
                               style: const TextStyle(
                                 color: Colors.lightBlue,
                                 decoration: TextDecoration.underline,
@@ -364,14 +437,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                                     },
                             ),
 
-                            const TextSpan(text: '\n\nSpecial thanks to '),
-                            const TextSpan(
-                              text: 'UOM',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.amber,
-                              ),
-                            ),
                             const TextSpan(text: '\n\nCrafted with '),
                             const TextSpan(
                               text: 'Love ❤️',
@@ -382,7 +447,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                             ),
                           ],
                         ),
-                        textAlign: TextAlign.center,
+                        textAlign:
+                            TextAlign.center, // This keeps other text centered
                       ),
                     ],
                   ),
@@ -420,6 +486,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   @override
   void initState() {
     super.initState();
+    enableWakelock();
 
     // Initialize animation controller for disc rotation
     _animationController = AnimationController(
@@ -546,6 +613,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   void dispose() {
     _animationController.dispose();
     _audioPlayer.dispose();
+
     super.dispose();
   }
 
@@ -584,7 +652,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
 
               // Copyright Text at the Bottom
               Padding(
-                padding: const EdgeInsets.all(.0),
+                padding: const EdgeInsets.all(4.0),
                 child: ShaderMask(
                   shaderCallback:
                       (bounds) => LinearGradient(
@@ -889,13 +957,13 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                   Future.delayed(const Duration(seconds: 2), () {
                     if (mounted) {
                       setState(() {
-                        _isRefreshing = false;
+                       _isRefreshing = false;
                       });
                     }
                   });
                 },
                 icon: AnimatedRotation(
-                  turns: _isRefreshing ? 1.0 : 0.0,
+                  turns: _isRefreshing ? 1 : 0,
                   duration: const Duration(seconds: 2),
                   child: const Icon(Icons.refresh),
                 ),
@@ -915,6 +983,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
 
               return ListTile(
                 onTap: () => _playSong(index),
+
                 leading: ClipRRect(
                   borderRadius: BorderRadius.circular(4),
                   child: Image(
