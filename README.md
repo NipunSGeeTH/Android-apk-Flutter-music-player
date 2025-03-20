@@ -41,7 +41,10 @@ flutter run
 ---
 
 ## 🖼️ Screenshot
-![Music Player Screenshot](https://via.placeholder.com/400x700.png?text=Music+Player+App)
+
+
+<img src="https://github.com/user-attachments/assets/e24ee007-ee44-4294-b89f-3325ef34ed73" width="300"/>
+
 
 ---
 
