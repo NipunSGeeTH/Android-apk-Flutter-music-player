@@ -81,8 +81,8 @@ Pull requests are welcome. If you have suggestions, feel free to fork and improv
 ---
 
 ## 📬 Contact Me
-📧 Email: yourname@example.com  
-📷 Instagram: [@yourinsta](https://instagram.com/yourinsta)
+📧 Email: nipunsgeeth@gmail.com 
+📷 LinedIn: [@nipunsgeeth](https://linked.in/nipunsgeeth)
 
 ---
 
