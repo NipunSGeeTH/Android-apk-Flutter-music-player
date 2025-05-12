@@ -3,7 +3,12 @@
 Welcome to my **first Flutter project** — a beautifully simple **AI-assisted Music Player App**!  
 Built with ❤️ using **Flutter + AudioPlayers**.
 
-> 🔥 Powered by passion and creativity — proudly created as a first step into the world of Flutter development!
+---
+
+## 📥 Download
+**[👉 Click here to download the APK](https://github.com/NipunSGeeTH/Android-apk-Flutter-music-player/releases/download/v1.0.0/app-release.apk)**
+
+> 🔥 Powered by passion and creativity — proudly created as my first step into the world of Flutter development!
 
 ---
 
