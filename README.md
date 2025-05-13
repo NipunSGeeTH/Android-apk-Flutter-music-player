@@ -59,10 +59,23 @@ flutter run
 ## 📁 App Structure
 ```bash
 lib/
- ├─ main.dart                  # App entry point
- ├─ assets/                   # (Optional) Local assets/images
-android/
- ├─ app_icon/                # App icon assets (if customized)
+├── main.dart
+├── models/
+│   └── song.dart
+├── screens/
+│   └── music_player_page.dart
+├── components/
+|   ├── Middle_Popup.dart
+│   ├── player_view.dart
+│   ├── playlist_view.dart
+│   ├── progress_bar.dart
+│   ├── player_controls.dart
+│   ├── mini_player.dart
+│   └── success_popup.dart  
+├── services/
+│   └── song_service.dart
+└── utils/
+    └── audio_helpers.dart
 ```
 
 ---
